@@ -1,4 +1,4 @@
-package ca.bcit.comp2522.lab2;
+package ca.bcit.comp2522.lab2.Code;
 
 import java.util.Calendar;
 import java.util.Date;
