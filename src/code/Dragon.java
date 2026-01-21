@@ -10,7 +10,7 @@ import java.util.Date;
  */
 public class Dragon extends Creature
 {
-    private static final int MIN_FIRE_POWER = 0;
+    private static final int NO_FIRE_POWER = 0;
     private static final int MAX_FIRE_POWER = 100;
 
     private static final int FIRE_POWER_COST = 10;
@@ -19,12 +19,13 @@ public class Dragon extends Creature
     private int firePower;
 
     /**
-     * Constructs a Dragon.
+     * Constructs a Dragon with the specified attributes.
+     * All parameters are validated to ensure they meet the required constraints.
      *
-     * @param name        name (must not be null/blank)
-     * @param dateOfBirth dob (must not be in the future)
-     * @param health      health (1..100)
-     * @param firePower   firepower (0..100)
+     * @param name        the dragon's name
+     * @param dateOfBirth the dragon's date of birth
+     * @param health      the dragon's initial health
+     * @param firePower   the dragon's initial firepower (must be between NO_FIRE_POWER and MAX_FIRE_POWER inclusive)
      * @throws IllegalArgumentException if any parameter is invalid
      */
     public Dragon(final String name,
@@ -40,9 +41,9 @@ public class Dragon extends Creature
     }
 
     /**
-     * Returns current firepower.
+     * Returns the dragon's current firepower level.
      *
-     * @return firepower
+     * @return the current firepower (NO_FIRE_POWER to MAX_FIRE_POWER)
      */
     public final int getFirePower()
     {
@@ -50,9 +51,10 @@ public class Dragon extends Creature
     }
 
     /**
-     * Returns details including firepower.
+     * Returns a formatted string containing the dragon's details.
+     * Overrides the Creature getDetails() method to include firepower information.
      *
-     * @return details string
+     * @return a formatted string with dragon details including firepower
      */
     @Override
     public String getDetails()
@@ -61,10 +63,12 @@ public class Dragon extends Creature
     }
 
     /**
-     * Breathes fire at a target, costing firepower and dealing damage.
+     * Commands the dragon to breathe fire at a target creature.
+     * Breathing fire costs FIRE_POWER_COST firepower and deals FIRE_DAMAGE damage to the target.
+     * The dragon must have at least FIRE_POWER_COST firepower to breathe fire.
      *
-     * @param target target creature
-     * @throws LowFirePowerException if firepower is insufficient
+     * @param target the creature to attack with fire (must not be null)
+     * @throws LowFirePowerException if firepower is less than the cost to breathe fire
      * @throws IllegalArgumentException if target is null
      */
     public void breatheFire(final Creature target) throws LowFirePowerException
@@ -81,14 +85,16 @@ public class Dragon extends Creature
     }
 
     /**
-     * Restores firepower by amount, capped at 100.
+     * Restores the dragon's firepower by the specified amount.
+     * Firepower cannot exceed MAX_FIREPOWER; if restoration would raise firepower above MAX_FIREPOWER,
+     * firepower is capped at MAX_FIREPOWER.
      *
-     * @param amount amount to restore (must be >= 0)
+     * @param amount the amount of firepower to restore (must be non-negative)
      * @throws IllegalArgumentException if amount is negative
      */
     public void restoreFirePower(final int amount)
     {
-        if (amount < 0)
+        if (amount < NO_FIRE_POWER)
         {
             throw new IllegalArgumentException("Restore amount cannot be negative: " + amount);
         }
@@ -101,14 +107,26 @@ public class Dragon extends Creature
         }
     }
 
+    /**
+     * Validates that the firepower value is within the acceptable range.
+     *
+     * @param firePower the firepower value to validate
+     * @throws IllegalArgumentException if firepower is not between NO_FIRE_POWER and MAX_FIRE_POWER inclusive
+     */
     private static void validateFirePower(final int firePower)
     {
-        if (firePower < MIN_FIRE_POWER || firePower > MAX_FIRE_POWER)
+        if (firePower < NO_FIRE_POWER || firePower > MAX_FIRE_POWER)
         {
-            throw new IllegalArgumentException("Fire power out of range (" + MIN_FIRE_POWER + ".." + MAX_FIRE_POWER + "): " + firePower);
+            throw new IllegalArgumentException("Fire power out of range (" + NO_FIRE_POWER + ".." + MAX_FIRE_POWER + "): " + firePower);
         }
     }
 
+    /**
+     * Validates that the target creature is not null.
+     *
+     * @param target the target creature to validate
+     * @throws IllegalArgumentException if target is null
+     */
     private static void validateTarget(final Creature target)
     {
         if (target == null)

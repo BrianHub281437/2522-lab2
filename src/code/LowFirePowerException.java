@@ -1,16 +1,19 @@
 package code;
+
 /**
- * Thrown when a Dragon tries to breathe fire with insufficient firepower.
+ * Thrown when a Dragon attempts to breathe fire with insufficient firepower.
+ * This is a checked exception that extends Exception, requiring explicit handling.
  *
  * @author Ziad Malik
+ * @author Brian Lau
  * @version 1.0
  */
 public class LowFirePowerException extends Exception
 {
     /**
-     * Constructs a LowFirePowerException with a message.
+     * Constructs a LowFirePowerException with a descriptive error message.
      *
-     * @param message message
+     * @param message the error message describing the firepower shortage
      */
     public LowFirePowerException(final String message)
     {
