@@ -1,10 +1,14 @@
 package code;
+
 import java.util.Date;
 
 /**
- * An Orc is a Creature with rage.
+ * Orc is a specific Creature with rage-based combat abilities.
+ * Orcs have rage that builds up and can be unleashed in berserk attacks.
+ * Higher rage levels result in more devastating attacks.
  *
  * @author Ziad Malik
+ * @author Brian Lau
  * @version 1.0
  */
 public class Orc extends Creature
@@ -23,12 +27,13 @@ public class Orc extends Creature
     private int rage;
 
     /**
-     * Constructs an Orc.
+     * Constructs an Orc with the specified attributes.
+     * All parameters are validated to ensure they meet the required constraints.
      *
-     * @param name        name (must not be null/blank)
-     * @param dateOfBirth dob (must not be in the future)
-     * @param health      health (1..100)
-     * @param rage        rage (0..30)
+     * @param name        the orc's name
+     * @param dateOfBirth the orc's date of birth
+     * @param health      the orc's initial health
+     * @param rage        the orc's initial rage (must be between 0 and 30 inclusive)
      * @throws IllegalArgumentException if any parameter is invalid
      */
     public Orc(final String name,
@@ -44,9 +49,9 @@ public class Orc extends Creature
     }
 
     /**
-     * Returns current rage.
+     * Returns the orc's current rage level.
      *
-     * @return rage
+     * @return the current rage (MIN_RAGE to MAX_RAGE)
      */
     public final int getRage()
     {
@@ -54,9 +59,10 @@ public class Orc extends Creature
     }
 
     /**
-     * Returns details including rage.
+     * Returns a formatted string containing the orc's details.
+     * Overrides the Creature getDetails() method to include rage information.
      *
-     * @return details string
+     * @return a formatted string with orc details including rage
      */
     @Override
     public String getDetails()
@@ -65,11 +71,13 @@ public class Orc extends Creature
     }
 
     /**
-     * Goes berserk: requires at least 5 rage, increases rage by 5,
-     * then deals damage (30 if rage exceeds 20 after the increase, else 15).
+     * Commands the orc to go berserk and attack a target creature.
+     * Going berserk requires at least 5 rage and increases rage by 5.
+     * If rage exceeds 20 after the increase, deals 30 damage; otherwise deals 15 damage.
+     * The orc must have at least 5 rage to go berserk.
      *
-     * @param target target creature
-     * @throws LowRageException if rage is below 5
+     * @param target the creature to attack in a berserk rage (must not be null)
+     * @throws LowRageException if rage is less than the minimum required to berserk
      * @throws IllegalArgumentException if target is null
      */
     public void berserk(final Creature target)
@@ -102,6 +110,12 @@ public class Orc extends Creature
         target.takeDamage(damage);
     }
 
+    /**
+     * Validates that the rage value is within the acceptable range.
+     *
+     * @param rage the rage value to validate
+     * @throws IllegalArgumentException if rage is not between MIN_RAGE and MAX_RAGE inclusive
+     */
     private static void validateRage(final int rage)
     {
         if (rage < MIN_RAGE || rage > MAX_RAGE)
@@ -110,6 +124,12 @@ public class Orc extends Creature
         }
     }
 
+    /**
+     * Validates that the target creature is not null.
+     *
+     * @param target the target creature to validate
+     * @throws IllegalArgumentException if target is null
+     */
     private static void validateTarget(final Creature target)
     {
         if (target == null)
