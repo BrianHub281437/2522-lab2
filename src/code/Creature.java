@@ -4,9 +4,11 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * Models a generic fantasy creature with a name, birthdate, and health.
+ * Models a fantasy creature with a name, birthdate, and health.
+ * Creatures can take damage, heal, and provide details about themselves.
  *
  * @author Ziad Malik
+ * @author Brian Lau
  * @version 1.0
  */
 public class Creature
@@ -17,14 +19,15 @@ public class Creature
 
     private final String name;
     private final Date dateOfBirth;
+    private static final int MIN_YEARS = 0;
     private int health;
 
     /**
-     * Constructs a Creature.
+     * Constructs a Creature with the specified attributes.
      *
-     * @param name        creature name (must not be null/blank)
-     * @param dateOfBirth date of birth (must not be in the future)
-     * @param health      initial health (must be 1..100)
+     * @param name        the creature's name (must not be null or blank)
+     * @param dateOfBirth the creature's date of birth (must not be null or in the future)
+     * @param health      the creature's initial health (must be between MIN_HEALTH and MAX_HEALTH inclusive)
      * @throws IllegalArgumentException if any parameter is invalid
      */
     public Creature(final String name,
@@ -43,7 +46,7 @@ public class Creature
     /**
      * Returns the creature's name.
      *
-     * @return name
+     * @return the name of the creature
      */
     public final String getName()
     {
@@ -51,9 +54,9 @@ public class Creature
     }
 
     /**
-     * Returns a defensive copy of the creature's birthdate.
+     * Returns the creature's birthdate.
      *
-     * @return date of birth
+     * @return a copy of the creature's date of birth
      */
     public final Date getDateOfBirth()
     {
@@ -61,9 +64,9 @@ public class Creature
     }
 
     /**
-     * Returns the current health.
+     * Returns the creature's current health value.
      *
-     * @return health
+     * @return the current health (DEAD_HEALTH to MAX_HEALTH)
      */
     public final int getHealth()
     {
@@ -71,9 +74,9 @@ public class Creature
     }
 
     /**
-     * Returns true if the creature is alive.
+     * Checks if the creature is currently alive.
      *
-     * @return true if health is greater than 0
+     * @return true if health is greater than DEAD_HEALTH, false otherwise
      */
     public final boolean isAlive()
     {
@@ -81,14 +84,16 @@ public class Creature
     }
 
     /**
-     * Reduces health by damage. Health cannot go below 0.
+     * Reduces the creature's health by the specified damage amount.
+     * Health cannot go below DEAD_HEALTH,
+     * If damage would reduce health below DEAD_HEALTH, health is set to DEAD_HEALTH.
      *
-     * @param damage damage amount (must be >= 0)
+     * @param damage the amount of damage to inflict (must be non-negative)
      * @throws DamageException if damage is negative
      */
     public void takeDamage(final int damage)
     {
-        if (damage < 0)
+        if (damage < DEAD_HEALTH)
         {
             throw new DamageException("Damage cannot be negative: " + damage);
         }
@@ -102,14 +107,16 @@ public class Creature
     }
 
     /**
-     * Increases health by healAmount. Health cannot exceed 100.
+     * Increases the creature's health by the specified healing amount.
+     * Health cannot exceed MAX_HEALTH.
+     * If healing would raise health above MAX_HEALTH, health is capped at MAX_HEALTH.
      *
-     * @param healAmount healing amount (must be >= 0)
-     * @throws HealingException if healing amount is negative
+     * @param healAmount the amount of health to restore (must be non-negative)
+     * @throws HealingException if healAmount is negative
      */
     public void heal(final int healAmount)
     {
-        if (healAmount < 0)
+        if (healAmount < DEAD_HEALTH)
         {
             throw new HealingException("Healing cannot be negative: " + healAmount);
         }
@@ -123,9 +130,10 @@ public class Creature
     }
 
     /**
-     * Calculates the creature's age in years (based on dateOfBirth).
+     * Calculates and returns the creature's age in years based on its date of birth.
+     * The age is calculated by comparing the birthdate to the current date.
      *
-     * @return age in years (>= 0)
+     * @return the creature's age in years
      */
     public final int getAgeYears()
     {
@@ -144,9 +152,10 @@ public class Creature
     }
 
     /**
-     * Returns a formatted details string (name, birthdate, age, health).
+     * Returns a formatted string containing the creature's details.
+     * The details include the class type, name, date of birth, age in years, and current health.
      *
-     * @return details string
+     * @return a formatted string with creature details
      */
     public String getDetails()
     {
@@ -158,6 +167,14 @@ public class Creature
                 health);
     }
 
+    /**
+     * Calculates the age in years between a birthdate and today's date.
+     * Accounts for whether the birthday has occurred yet this year.
+     *
+     * @param today the current date calendar
+     * @param birth the birthdate calendar
+     * @return the age in years
+     */
     private static int calculateAgeYears(final Calendar today,
                                          final Calendar birth)
     {
@@ -177,22 +194,34 @@ public class Creature
             years--;
         }
 
-        if (years < 0)
+        if (years < MIN_YEARS)
         {
-            years = 0;
+            years = MIN_YEARS;
         }
 
         return years;
     }
 
+    /**
+     * Validates that the provided name is not null or blank.
+     *
+     * @param name the name to validate
+     * @throws IllegalArgumentException if name is null or blank
+     */
     private static void validateName(final String name)
     {
         if (name == null || name.isBlank())
         {
-            throw new IllegalArgumentException("Name must not be null/blank.");
+            throw new IllegalArgumentException("Name must not be null or blank.");
         }
     }
 
+    /**
+     * Validates that the provided date of birth is not null and not in the future.
+     *
+     * @param dateOfBirth the date of birth to validate
+     * @throws IllegalArgumentException if dateOfBirth is null or in the future
+     */
     private static void validateDateOfBirth(final Date dateOfBirth)
     {
         final Date now;
@@ -210,6 +239,12 @@ public class Creature
         }
     }
 
+    /**
+     * Validates that the health value is within the acceptable range.
+     *
+     * @param health the health value to validate
+     * @throws IllegalArgumentException if health is not between MIN_HEALTH and MAX_HEALTH inclusive
+     */
     private static void validateHealth(final int health)
     {
         if (health < MIN_HEALTH || health > MAX_HEALTH)

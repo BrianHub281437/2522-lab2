@@ -3,14 +3,17 @@ package code;
 import java.util.Date;
 
 /**
- * An Elf is a Creature with mana.
+ * Elf is a specific Creature with magical abilities.
+ * Elves have mana that they can use to cast spells and attack other creatures.
+ * Mana can be depleted by casting spells and restored over time.
  *
  * @author Ziad Malik
+ * @author Brian Lau
  * @version 1.0
  */
 public class Elf extends Creature
 {
-    private static final int MIN_MANA = 0;
+    private static final int NO_MANA = 0;
     private static final int MAX_MANA = 50;
 
     private static final int SPELL_MANA_COST = 5;
@@ -19,12 +22,13 @@ public class Elf extends Creature
     private int mana;
 
     /**
-     * Constructs an Elf.
+     * Constructs an Elf with the specified attributes.
+     * All parameters are validated to ensure they meet the required constraints.
      *
-     * @param name        name (must not be null/blank)
-     * @param dateOfBirth dob (must not be in the future)
-     * @param health      health (1..100)
-     * @param mana        mana (0..50)
+     * @param name        the elf's name (must not be null or blank)
+     * @param dateOfBirth the elf's date of birth (must not be null or in the future)
+     * @param health      the elf's initial health (must be between 1 and 100 inclusive)
+     * @param mana        the elf's initial mana (must be between 0 and 50 inclusive)
      * @throws IllegalArgumentException if any parameter is invalid
      */
     public Elf(final String name,
@@ -40,9 +44,9 @@ public class Elf extends Creature
     }
 
     /**
-     * Returns current mana.
+     * Returns the elf's current mana level.
      *
-     * @return mana
+     * @return the current mana (0 to 50)
      */
     public final int getMana()
     {
@@ -50,9 +54,10 @@ public class Elf extends Creature
     }
 
     /**
-     * Returns details including mana.
+     * Returns a formatted string containing the elf's details.
+     * Overrides the Creature getDetails() method to include mana information.
      *
-     * @return details string
+     * @return a formatted string with elf details including mana
      */
     @Override
     public String getDetails()
@@ -61,10 +66,12 @@ public class Elf extends Creature
     }
 
     /**
-     * Casts a spell at a target, costing mana and dealing damage.
+     * Commands the elf to cast a spell at a target creature.
+     * Casting a spell costs 5 mana and deals 10 damage to the target.
+     * The elf must have at least 5 mana to cast a spell.
      *
-     * @param target target creature
-     * @throws LowManaException if mana is insufficient
+     * @param target the creature to attack with magic (must not be null)
+     * @throws LowManaException if mana is less than the cost to cast a spell
      * @throws IllegalArgumentException if target is null
      */
     public void castSpell(final Creature target) throws LowManaException
@@ -81,9 +88,11 @@ public class Elf extends Creature
     }
 
     /**
-     * Restores mana by amount, capped at 50.
+     * Restores the elf's mana by the specified amount.
+     * Mana cannot exceed 50; if restoration would raise mana above 50,
+     * mana is capped at 50.
      *
-     * @param amount amount to restore (must be >= 0)
+     * @param amount the amount of mana to restore (must be non-negative)
      * @throws IllegalArgumentException if amount is negative
      */
     public void restoreMana(final int amount)
@@ -101,14 +110,26 @@ public class Elf extends Creature
         }
     }
 
+    /**
+     * Validates that the mana value is within the acceptable range.
+     *
+     * @param mana the mana value to validate
+     * @throws IllegalArgumentException if mana is not between NO_MANA and MAX_MANA inclusive
+     */
     private static void validateMana(final int mana)
     {
-        if (mana < MIN_MANA || mana > MAX_MANA)
+        if (mana < NO_MANA || mana > MAX_MANA)
         {
-            throw new IllegalArgumentException("Mana out of range (" + MIN_MANA + ".." + MAX_MANA + "): " + mana);
+            throw new IllegalArgumentException("Mana out of range (" + NO_MANA + ".." + MAX_MANA + "): " + mana);
         }
     }
 
+    /**
+     * Validates that the target creature is not null.
+     *
+     * @param target the target creature to validate
+     * @throws IllegalArgumentException if target is null
+     */
     private static void validateTarget(final Creature target)
     {
         if (target == null)
