@@ -3,12 +3,9 @@ package code;
 import java.util.Date;
 
 /**
- * Dragon is a specific Creature with the ability to breathe fire.
- * Dragons have firepower that they can use to attack.
- * Firepower can be depleted by breathing fire and restored over time.
+ * A Dragon is a Creature with firepower.
  *
  * @author Ziad Malik
- * @author Brian Lau
  * @version 1.0
  */
 public class Dragon extends Creature
