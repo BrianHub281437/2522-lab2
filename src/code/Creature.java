@@ -3,7 +3,7 @@ package code;
 import java.util.Calendar;
 import java.util.Date;
 
-public abstract class Creature {
+public class Creature {
 
     private static final int MAX_HEALTH = 100;
     private static final int MIN_HEALTH = 1;
@@ -13,7 +13,7 @@ public abstract class Creature {
     private final Date dateOfBirth;
     private int health;
 
-    public Creature(final String name, final Date dateOfBirth, final int health) {
+    Creature(final String name, final Date dateOfBirth, final int health) {
 
         if (name == null || name.trim().isEmpty()) {
             throw new IllegalArgumentException("name cannot be null or empty");
@@ -37,13 +37,13 @@ public abstract class Creature {
         this.health = health;
     }
 
-    public boolean isAlive() {
+    protected boolean isAlive() {
         return health > DEAD;
     }
 
-    public void takeDamage(final int damage) throws damageException {
+    public void takeDamage(final int damage) {
         if (damage < DEAD) {
-            throw new damageException("damage cannot be negative");
+            throw new DamageException("damage cannot be negative");
         }
 
         health -= damage;
@@ -53,9 +53,9 @@ public abstract class Creature {
         }
     }
 
-    public void heal(final int healAmount) throws healException {
+    public void heal(final int healAmount) {
         if (healAmount < DEAD) {
-            throw new healException("healing amount cannot be negative");
+            throw new HealingException("healing amount cannot be negative");
         }
 
         health += healAmount;
