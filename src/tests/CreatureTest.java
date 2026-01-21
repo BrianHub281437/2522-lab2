@@ -13,9 +13,10 @@ import code.Orc;
 import java.util.Date;
 
 /**
- * Drives creature, dragon, elf and orc.
+ * Test driver for Creature, Dragon, Elf, and Orc classes.
  *
  * @author Ziad Malik
+ * @author Brian Lau
  * @version 1.0
  */
 public class CreatureTest
@@ -31,8 +32,9 @@ public class CreatureTest
 
     /**
      * Program entry point.
+     * Creates creatures and demonstrates polymorphism, runtime type checking, and combat.
      *
-     * @param args command line args
+     * @param args command line arguments (not used)
      */
     public static void main(final String[] args)
     {
@@ -44,22 +46,37 @@ public class CreatureTest
         c2 = new Elf("Elowen", new Date(), ELF_HEALTH, ELF_MANA);
         c3 = new Orc("Gruk", new Date(), ORC_HEALTH, ORC_RAGE);
 
+        System.out.println("=== Demonstrating Polymorphism with getDetails() ===");
         printDetailsPolymorphic(c1);
         printDetailsPolymorphic(c2);
         printDetailsPolymorphic(c3);
 
+        System.out.println("\n=== Demonstrating Runtime Type Checking ===");
         showRuntimeTypes(c1);
         showRuntimeTypes(c2);
         showRuntimeTypes(c3);
 
+        System.out.println("\n=== Demonstrating Combat with Exception Handling ===");
         makeCreaturesFight(c1, c2, c3);
     }
 
+    /**
+     * Demonstrates polymorphism by calling getDetails() on a Creature reference
+     * that may actually be a Dragon, Elf, or Orc at runtime.
+     *
+     * @param creature the creature whose details to print
+     */
     private static void printDetailsPolymorphic(final Creature creature)
     {
         System.out.println(creature.getDetails());
     }
 
+    /**
+     * Demonstrates runtime type checking using both getClass().getSimpleName()
+     * and the instanceof operator.
+     *
+     * @param creature the creature whose runtime type to check
+     */
     private static void showRuntimeTypes(final Creature creature)
     {
         final String simpleName;
@@ -86,6 +103,15 @@ public class CreatureTest
         }
     }
 
+    /**
+     * Demonstrates combat between creatures with proper exception handling.
+     * Shows handling of both checked exceptions (LowFirePowerException, LowManaException)
+     * and unchecked exceptions (LowRageException, DamageException, HealingException).
+     *
+     * @param c1 the first creature (expected to be a Dragon)
+     * @param c2 the second creature (expected to be an Elf)
+     * @param c3 the third creature (expected to be an Orc)
+     */
     private static void makeCreaturesFight(final Creature c1,
                                            final Creature c2,
                                            final Creature c3)
@@ -98,6 +124,7 @@ public class CreatureTest
         elf = (Elf)c2;
         orc = (Orc)c3;
 
+        // Dragon breathes fire on Orc - demonstrates checked exception handling
         try
         {
             dragon.breatheFire(orc);
@@ -116,6 +143,7 @@ public class CreatureTest
             System.out.println("Unexpected runtime issue during fire attack: " + e.getMessage());
         }
 
+        // Elf casts spell on Dragon - demonstrates checked exception handling
         try
         {
             elf.castSpell(dragon);
@@ -134,6 +162,7 @@ public class CreatureTest
             System.out.println("Unexpected runtime issue during spell: " + e.getMessage());
         }
 
+        // Orc goes berserk on Elf - demonstrates unchecked exception handling
         try
         {
             orc.berserk(elf);
@@ -152,6 +181,7 @@ public class CreatureTest
             System.out.println("Unexpected runtime issue during berserk: " + e.getMessage());
         }
 
+        // Test invalid healing - demonstrates unchecked HealingException handling
         try
         {
             elf.heal(-1);
@@ -161,7 +191,7 @@ public class CreatureTest
             System.out.println("Healing error caught safely: " + e.getMessage());
         }
 
-        System.out.println("After fighting:");
+        System.out.println("\n=== Final Status After Fighting ===");
         System.out.println(dragon.getDetails());
         System.out.println(elf.getDetails());
         System.out.println(orc.getDetails());
