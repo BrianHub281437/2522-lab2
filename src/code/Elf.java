@@ -3,9 +3,7 @@ package code;
 import java.util.Date;
 
 /**
- * Elf is a specific Creature with magical abilities.
- * Elves have mana that they can use to cast spells and attack other creatures.
- * Mana can be depleted by casting spells and restored over time.
+ * An Elf is a child of Creature
  *
  * @author Ziad Malik
  * @author Brian Lau
@@ -13,7 +11,7 @@ import java.util.Date;
  */
 public class Elf extends Creature
 {
-    private static final int NO_MANA = 0;
+    private static final int MIN_MANA = 0;
     private static final int MAX_MANA = 50;
 
     private static final int SPELL_MANA_COST = 5;
@@ -25,10 +23,10 @@ public class Elf extends Creature
      * Constructs an Elf with the specified attributes.
      * All parameters are validated to ensure they meet the required constraints.
      *
-     * @param name        the elf's name (must not be null or blank)
-     * @param dateOfBirth the elf's date of birth (must not be null or in the future)
-     * @param health      the elf's initial health (must be between 1 and 100 inclusive)
-     * @param mana        the elf's initial mana (must be between 0 and 50 inclusive)
+     * @param name        the elf's name
+     * @param dateOfBirth the elf's date of birth
+     * @param health      the elf's initial health
+     * @param mana        the elf's initial mana (must be between MIN_MANA and MAX_MANA inclusive)
      * @throws IllegalArgumentException if any parameter is invalid
      */
     public Elf(final String name,
@@ -46,7 +44,7 @@ public class Elf extends Creature
     /**
      * Returns the elf's current mana level.
      *
-     * @return the current mana (0 to 50)
+     * @return the current mana (MIN_MANA to MAX_MANA)
      */
     public final int getMana()
     {
@@ -67,8 +65,8 @@ public class Elf extends Creature
 
     /**
      * Commands the elf to cast a spell at a target creature.
-     * Casting a spell costs 5 mana and deals 10 damage to the target.
-     * The elf must have at least 5 mana to cast a spell.
+     * Casting a spell costs SPELL_MANA_COST mana and deals SPELL_DAMAGE damage to the target.
+     * The elf must have at least SPELL_MANA_COST mana to cast a spell.
      *
      * @param target the creature to attack with magic (must not be null)
      * @throws LowManaException if mana is less than the cost to cast a spell
@@ -97,7 +95,7 @@ public class Elf extends Creature
      */
     public void restoreMana(final int amount)
     {
-        if (amount < 0)
+        if (amount < MIN_MANA)
         {
             throw new IllegalArgumentException("Restore amount cannot be negative: " + amount);
         }
@@ -114,13 +112,13 @@ public class Elf extends Creature
      * Validates that the mana value is within the acceptable range.
      *
      * @param mana the mana value to validate
-     * @throws IllegalArgumentException if mana is not between NO_MANA and MAX_MANA inclusive
+     * @throws IllegalArgumentException if mana is not between MIN_MANA and MAX_MANA inclusive
      */
     private static void validateMana(final int mana)
     {
-        if (mana < NO_MANA || mana > MAX_MANA)
+        if (mana < MIN_MANA || mana > MAX_MANA)
         {
-            throw new IllegalArgumentException("Mana out of range (" + NO_MANA + ".." + MAX_MANA + "): " + mana);
+            throw new IllegalArgumentException("Mana out of range (" + MIN_MANA + ".." + MAX_MANA + "): " + mana);
         }
     }
 

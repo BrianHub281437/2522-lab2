@@ -3,9 +3,7 @@ package code;
 import java.util.Date;
 
 /**
- * Orc is a specific Creature with rage-based combat abilities.
- * Orcs have rage that builds up and can be unleashed in berserk attacks.
- * Higher rage levels result in more devastating attacks.
+ * Orc is a child of Creature
  *
  * @author Ziad Malik
  * @author Brian Lau
@@ -33,7 +31,7 @@ public class Orc extends Creature
      * @param name        the orc's name
      * @param dateOfBirth the orc's date of birth
      * @param health      the orc's initial health
-     * @param rage        the orc's initial rage (must be between 0 and 30 inclusive)
+     * @param rage        the orc's initial rage (must be between MIN_RAGE and MAX_RAGE inclusive)
      * @throws IllegalArgumentException if any parameter is invalid
      */
     public Orc(final String name,
@@ -72,9 +70,8 @@ public class Orc extends Creature
 
     /**
      * Commands the orc to go berserk and attack a target creature.
-     * Going berserk requires at least 5 rage and increases rage by 5.
-     * If rage exceeds 20 after the increase, deals 30 damage; otherwise deals 15 damage.
-     * The orc must have at least 5 rage to go berserk.
+     * Going berserk requires at least MIN_RAGE_TO_BESERK rage and increases rage by RAGE_INCREASE.
+     * If rage exceeds DOUBLE_DAMAGE_RAGE_THRESHOLD after the increase, deals DOUBLE_BESERK_DAMAGE damage; otherwise deals BASE_BESERK_DAMAGE damage.
      *
      * @param target the creature to attack in a berserk rage (must not be null)
      * @throws LowRageException if rage is less than the minimum required to berserk

@@ -2,7 +2,7 @@ package code;
 
 /**
  * Thrown when an Elf attempts to cast a spell with insufficient mana.
- * This is a checked exception that extends Exception, requiring explicit handling.
+ * This is a checked exception.
  *
  * @author Ziad Malik
  * @author Brian Lau

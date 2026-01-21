@@ -2,7 +2,7 @@ package code;
 
 /**
  * Thrown when a Dragon attempts to breathe fire with insufficient firepower.
- * This is a checked exception that extends Exception, requiring explicit handling.
+ * This is a checked exception.
  *
  * @author Ziad Malik
  * @author Brian Lau
