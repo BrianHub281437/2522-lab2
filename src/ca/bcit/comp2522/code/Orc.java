@@ -1,4 +1,4 @@
-package code;
+package ca.bcit.comp2522.code;
 
 import java.util.Date;
 
@@ -115,7 +115,8 @@ public class Orc extends Creature
      */
     private static void validateRage(final int rage)
     {
-        if (rage < MIN_RAGE || rage > MAX_RAGE)
+        if (rage < MIN_RAGE ||
+                rage > MAX_RAGE)
         {
             throw new IllegalArgumentException("Rage out of range (" + MIN_RAGE + ".." + MAX_RAGE + "): " + rage);
         }

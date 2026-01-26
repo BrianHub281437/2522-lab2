@@ -1,4 +1,4 @@
-package code;
+package ca.bcit.comp2522.code;
 
 import java.util.Calendar;
 import java.util.Date;

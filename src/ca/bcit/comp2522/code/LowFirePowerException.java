@@ -1,4 +1,4 @@
-package code;
+package ca.bcit.comp2522.code;
 
 /**
  * Thrown when a Dragon attempts to breathe fire with insufficient firepower.

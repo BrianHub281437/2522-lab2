@@ -1,4 +1,4 @@
-package code;
+package ca.bcit.comp2522.code;
 
 /**
  * Thrown when an invalid damage amount is applied to a creature.

@@ -1,4 +1,4 @@
-package code;
+package ca.bcit.comp2522.code;
 
 import java.util.Date;
 
@@ -116,7 +116,8 @@ public class Dragon extends Creature
      */
     private static void validateFirePower(final int firePower)
     {
-        if (firePower < MIN_FIRE_POWER || firePower > MAX_FIRE_POWER)
+        if (firePower < MIN_FIRE_POWER ||
+                firePower > MAX_FIRE_POWER)
         {
             throw new IllegalArgumentException("Fire power out of range (" + MIN_FIRE_POWER + ".." + MAX_FIRE_POWER + "): " + firePower);
         }

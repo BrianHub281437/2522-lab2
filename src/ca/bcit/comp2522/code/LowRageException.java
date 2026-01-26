@@ -1,4 +1,4 @@
-package code;
+package ca.bcit.comp2522.code;
 
 /**
  * Thrown when an Orc attempts to go berserk with insufficient rage.

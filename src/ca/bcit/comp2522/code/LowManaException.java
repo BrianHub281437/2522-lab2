@@ -1,4 +1,4 @@
-package code;
+package ca.bcit.comp2522.code;
 
 /**
  * Thrown when an Elf attempts to cast a spell with insufficient mana.

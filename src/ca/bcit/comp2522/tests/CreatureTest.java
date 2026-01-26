@@ -1,14 +1,14 @@
-package tests;
+package ca.bcit.comp2522.tests;
 
-import code.Creature;
-import code.DamageException;
-import code.Dragon;
-import code.Elf;
-import code.HealingException;
-import code.LowFirePowerException;
-import code.LowManaException;
-import code.LowRageException;
-import code.Orc;
+import ca.bcit.comp2522.code.Creature;
+import ca.bcit.comp2522.code.DamageException;
+import ca.bcit.comp2522.code.Dragon;
+import ca.bcit.comp2522.code.Elf;
+import ca.bcit.comp2522.code.HealingException;
+import ca.bcit.comp2522.code.LowFirePowerException;
+import ca.bcit.comp2522.code.LowManaException;
+import ca.bcit.comp2522.code.LowRageException;
+import ca.bcit.comp2522.code.Orc;
 
 import java.util.Date;
 

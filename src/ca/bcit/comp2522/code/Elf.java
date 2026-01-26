@@ -1,4 +1,4 @@
-package code;
+package ca.bcit.comp2522.code;
 
 import java.util.Date;
 
@@ -116,7 +116,8 @@ public class Elf extends Creature
      */
     private static void validateMana(final int mana)
     {
-        if (mana < MIN_MANA || mana > MAX_MANA)
+        if (mana < MIN_MANA ||
+                mana > MAX_MANA)
         {
             throw new IllegalArgumentException("Mana out of range (" + MIN_MANA + ".." + MAX_MANA + "): " + mana);
         }
