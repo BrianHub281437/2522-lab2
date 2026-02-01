@@ -1,5 +1,6 @@
 package ca.bcit.comp2522.tests;
 
+import ca.bcit.comp2522.code.Date;
 import ca.bcit.comp2522.code.Creature;
 import ca.bcit.comp2522.code.DamageException;
 import ca.bcit.comp2522.code.Dragon;
@@ -9,8 +10,6 @@ import ca.bcit.comp2522.code.LowFirePowerException;
 import ca.bcit.comp2522.code.LowManaException;
 import ca.bcit.comp2522.code.LowRageException;
 import ca.bcit.comp2522.code.Orc;
-
-import java.util.Date;
 
 /**
  * Test driver for Creature, Dragon, Elf, and Orc classes.

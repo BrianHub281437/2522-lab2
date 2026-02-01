@@ -1,7 +1,5 @@
 package ca.bcit.comp2522.code;
 
-import java.util.Date;
-
 /**
  * Orc is a child of Creature
  *

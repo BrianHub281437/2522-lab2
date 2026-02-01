@@ -1,7 +1,6 @@
 package ca.bcit.comp2522.code;
 
 import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Models a fantasy creature with a name, birthdate, and health.
@@ -42,7 +41,7 @@ public class Creature
         validateHealth(health);
 
         this.name = name;
-        this.dateOfBirth = new Date(dateOfBirth.getTime());
+        this.dateOfBirth = new Date(dateOfBirth.getYear(), dateOfBirth.getMonth(), dateOfBirth.getDay());
         this.health = health;
     }
 
@@ -64,7 +63,7 @@ public class Creature
      */
     public final Date getDateOfBirth()
     {
-        return new Date(dateOfBirth.getTime());
+        return new Date(dateOfBirth.getYear(), dateOfBirth.getMonth(), dateOfBirth.getDay());
     }
 
     /**
@@ -139,16 +138,12 @@ public class Creature
      */
     public final int getAgeYears()
     {
-        final Calendar today;
-        final Calendar birth;
+        final Date today;
         final int years;
 
-        today = Calendar.getInstance();
-        birth = Calendar.getInstance();
+        today = new Date();
 
-        birth.setTime(dateOfBirth);
-
-        years = calculateAgeYears(today, birth);
+        years = calculateAgeYears(today, dateOfBirth);
 
         return years;
     }
@@ -173,25 +168,37 @@ public class Creature
      * Calculates the age in years between a birthdate and today's date.
      * Accounts for whether the birthday has occurred yet this year.
      *
-     * @param today the current date calendar
-     * @param birth the birthdate calendar
+     * @param today the current date
+     * @param birth the birthdate
      * @return the age in years (MIN_AGE_YEAR or greater)
      */
-    private static int calculateAgeYears(final Calendar today,
-                                         final Calendar birth)
+    private static int calculateAgeYears(final Date today,
+                                         final Date birth)
     {
         final int yearDiff;
-        final int todayDayOfYear;
-        final int birthDayOfYear;
+        final boolean birthdayHasOccurred;
         int years;
 
-        yearDiff = today.get(Calendar.YEAR) - birth.get(Calendar.YEAR);
-        todayDayOfYear = today.get(Calendar.DAY_OF_YEAR);
-        birthDayOfYear = birth.get(Calendar.DAY_OF_YEAR);
+        yearDiff = today.getYear() - birth.getYear();
+
+        // Check if birthday has occurred this year
+        // Birthday has occurred if: (current month > birth month) OR (same month AND current day >= birth day)
+        if (today.getMonth() > birth.getMonth())
+        {
+            birthdayHasOccurred = true;
+        }
+        else if (today.getMonth() == birth.getMonth())
+        {
+            birthdayHasOccurred = today.getDay() >= birth.getDay();
+        }
+        else
+        {
+            birthdayHasOccurred = false;
+        }
 
         years = yearDiff;
 
-        if (todayDayOfYear < birthDayOfYear)
+        if (!birthdayHasOccurred)
         {
             years--;
         }
