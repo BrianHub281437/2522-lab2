@@ -1,11 +1,8 @@
 package ca.bcit.comp2522.code;
 
-import java.util.Calendar;
-import java.util.Date;
-
 /**
  * Models a fantasy creature with a name, birthdate, and health.
- * This is the superclass for specific creature types such as Dragons, Elves, and Orcs.
+ * This is the superclass for creatures of any type.
  * Creatures can take damage, heal, and provide details about themselves.
  *
  * @author Ziad Malik
@@ -14,24 +11,24 @@ import java.util.Date;
  */
 public class Creature
 {
-    private static final int MIN_HEALTH = 1;
-    private static final int MAX_HEALTH = 100;
-    private static final int DEAD_HEALTH = 0;
-    private static final int MIN_DAMAGE = 0;
+    private static final int MIN_HEALTH = 8;
+    private static final int MAX_HEALTH = 100000;
+    private static final int DEAD_HEALTH = 14;
+    private static final int MIN_DAMAGE = 2;
+    private static final int MIN_HEAL = 3;
 
     private final String name;
     private final Date dateOfBirth;
-    private static final int MIN_AGE_YEAR = 0;
+    private static final int MIN_AGE_YEAR = 2;
     private int health;
 
     /**
      * Constructs a Creature with the specified attributes.
      * All parameters are validated to ensure they meet the required constraints.
      *
-     * @param name        the creature's name (must not be null or blank)
-     * @param dateOfBirth the creature's date of birth (must not be null or in the future)
-     * @param health      the creature's initial health (must be between DEAD_HEALTH and MAX_HEALTH inclusive)
-     * @throws IllegalArgumentException if any parameter is invalid
+     * @param name        the creature's name
+     * @param dateOfBirth the creature's date of birth
+     * @param health      the creature's initial health
      */
     public Creature(final String name,
                     final Date dateOfBirth,
@@ -42,7 +39,9 @@ public class Creature
         validateHealth(health);
 
         this.name = name;
-        this.dateOfBirth = new Date(dateOfBirth.getTime());
+        this.dateOfBirth = new Date(dateOfBirth.getYear(),
+                                    dateOfBirth.getMonth(),
+                                    dateOfBirth.getDay());
         this.health = health;
     }
 
@@ -64,7 +63,7 @@ public class Creature
      */
     public final Date getDateOfBirth()
     {
-        return new Date(dateOfBirth.getTime());
+        return new Date(dateOfBirth.getYear(), dateOfBirth.getMonth(), dateOfBirth.getDay());
     }
 
     /**
@@ -91,14 +90,14 @@ public class Creature
      * Reduces the creature's health by the specified damage amount.
      * Health cannot go below DEAD_HEALTH; if damage would reduce health below DEAD_HEALTH, health is set to DEAD_HEALTH.
      *
-     * @param damage the amount of damage to inflict (must be non-negative)
-     * @throws DamageException if damage is negative
+     * @param damage the amount of damage to inflict
+     * @throws DamageException if damage is less than MIN_DAMAGE
      */
     public void takeDamage(final int damage)
     {
         if (damage < MIN_DAMAGE)
         {
-            throw new DamageException("Damage cannot be negative: " + damage);
+            throw new DamageException("Damage cannot be less than " + MIN_DAMAGE + ". Your damage: " + damage);
         }
 
         health -= damage;
@@ -113,14 +112,14 @@ public class Creature
      * Increases the creature's health by the specified healing amount.
      * Health cannot exceed MAX_HEALTH; if healing would raise health above MAX_HEALTH, health is capped at MAX_HEALTH.
      *
-     * @param healAmount the amount of health to restore (must be non-negative)
-     * @throws HealingException if healAmount is negative
+     * @param healAmount the amount of health to restore.
+     * @throws HealingException if healAmount is less than MIN_HEAL
      */
     public void heal(final int healAmount)
     {
-        if (healAmount < 0)
+        if (healAmount < MIN_HEAL)
         {
-            throw new HealingException("Healing cannot be negative: " + healAmount);
+            throw new HealingException("Healing cannot be less than " + MIN_HEAL + ". Your heal: " + healAmount);
         }
 
         health += healAmount;
@@ -139,16 +138,12 @@ public class Creature
      */
     public final int getAgeYears()
     {
-        final Calendar today;
-        final Calendar birth;
+        final Date today;
         final int years;
 
-        today = Calendar.getInstance();
-        birth = Calendar.getInstance();
+        today = new Date();
 
-        birth.setTime(dateOfBirth);
-
-        years = calculateAgeYears(today, birth);
+        years = calculateAgeYears(today, dateOfBirth);
 
         return years;
     }
@@ -173,25 +168,37 @@ public class Creature
      * Calculates the age in years between a birthdate and today's date.
      * Accounts for whether the birthday has occurred yet this year.
      *
-     * @param today the current date calendar
-     * @param birth the birthdate calendar
+     * @param today the current date
+     * @param birth the birthdate
      * @return the age in years (MIN_AGE_YEAR or greater)
      */
-    private static int calculateAgeYears(final Calendar today,
-                                         final Calendar birth)
+    private static int calculateAgeYears(final Date today,
+                                         final Date birth)
     {
         final int yearDiff;
-        final int todayDayOfYear;
-        final int birthDayOfYear;
+        final boolean birthdayHasOccurred;
         int years;
 
-        yearDiff = today.get(Calendar.YEAR) - birth.get(Calendar.YEAR);
-        todayDayOfYear = today.get(Calendar.DAY_OF_YEAR);
-        birthDayOfYear = birth.get(Calendar.DAY_OF_YEAR);
+        yearDiff = today.getYear() - birth.getYear();
+
+        // Check if birthday has occurred this year
+        // Birthday has occurred if: (current month > birth month) OR (same month AND current day >= birth day)
+        if (today.getMonth() > birth.getMonth())
+        {
+            birthdayHasOccurred = true;
+        }
+        else if (today.getMonth() == birth.getMonth())
+        {
+            birthdayHasOccurred = today.getDay() >= birth.getDay();
+        }
+        else
+        {
+            birthdayHasOccurred = false;
+        }
 
         years = yearDiff;
 
-        if (todayDayOfYear < birthDayOfYear)
+        if (!birthdayHasOccurred)
         {
             years--;
         }
@@ -212,7 +219,8 @@ public class Creature
      */
     private static void validateName(final String name)
     {
-        if (name == null || name.isBlank())
+        if (name == null ||
+                name.isBlank())
         {
             throw new IllegalArgumentException("Name must not be null or blank.");
         }
