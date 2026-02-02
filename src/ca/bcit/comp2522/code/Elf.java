@@ -24,8 +24,7 @@ public class Elf extends Creature
      * @param name        the elf's name
      * @param dateOfBirth the elf's date of birth
      * @param health      the elf's initial health
-     * @param mana        the elf's initial mana (must be between MIN_MANA and MAX_MANA inclusive)
-     * @throws IllegalArgumentException if any parameter is invalid
+     * @param mana        the elf's initial mana
      */
     public Elf(final String name,
                final Date dateOfBirth,
@@ -66,9 +65,8 @@ public class Elf extends Creature
      * Casting a spell costs SPELL_MANA_COST mana and deals SPELL_DAMAGE damage to the target.
      * The elf must have at least SPELL_MANA_COST mana to cast a spell.
      *
-     * @param target the creature to attack with magic (must not be null)
+     * @param target the creature to attack with magic
      * @throws LowManaException if mana is less than the cost to cast a spell
-     * @throws IllegalArgumentException if target is null
      */
     public void castSpell(final Creature target) throws LowManaException
     {
@@ -85,10 +83,10 @@ public class Elf extends Creature
 
     /**
      * Restores the elf's mana by the specified amount.
-     * Mana cannot exceed 50; if restoration would raise mana above 50,
-     * mana is capped at 50.
+     * Mana cannot exceed MAX_MANA; if restoration would raise mana above MAX_MANA,
+     * mana is capped at MAX_MANA.
      *
-     * @param amount the amount of mana to restore (must be non-negative)
+     * @param amount the amount of mana to restore
      * @throws IllegalArgumentException if amount is negative
      */
     public void restoreMana(final int amount)

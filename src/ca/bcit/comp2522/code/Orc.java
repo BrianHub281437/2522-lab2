@@ -29,8 +29,7 @@ public class Orc extends Creature
      * @param name        the orc's name
      * @param dateOfBirth the orc's date of birth
      * @param health      the orc's initial health
-     * @param rage        the orc's initial rage (must be between MIN_RAGE and MAX_RAGE inclusive)
-     * @throws IllegalArgumentException if any parameter is invalid
+     * @param rage        the orc's initial rage
      */
     public Orc(final String name,
                final Date dateOfBirth,
@@ -69,11 +68,11 @@ public class Orc extends Creature
     /**
      * Commands the orc to go berserk and attack a target creature.
      * Going berserk requires at least MIN_RAGE_TO_BESERK rage and increases rage by RAGE_INCREASE.
-     * If rage exceeds DOUBLE_DAMAGE_RAGE_THRESHOLD after the increase, deals DOUBLE_BESERK_DAMAGE damage; otherwise deals BASE_BESERK_DAMAGE damage.
+     * If rage exceeds DOUBLE_DAMAGE_RAGE_THRESHOLD after the increase,
+     * deals DOUBLE_BESERK_DAMAGE damage; otherwise deals BASE_BESERK_DAMAGE damage.
      *
-     * @param target the creature to attack in a berserk rage (must not be null)
-     * @throws LowRageException if rage is less than the minimum required to berserk
-     * @throws IllegalArgumentException if target is null
+     * @param target the creature to attack in a berserk rage
+     * @throws LowRageException if rage is less than MIN_RAGE_TO_BERSERK required to berserk
      */
     public void berserk(final Creature target)
     {

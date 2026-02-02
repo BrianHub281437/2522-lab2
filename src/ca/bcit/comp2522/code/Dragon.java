@@ -24,8 +24,7 @@ public class Dragon extends Creature
      * @param name        the dragon's name
      * @param dateOfBirth the dragon's date of birth
      * @param health      the dragon's initial health
-     * @param firePower   the dragon's initial firepower (must be between MIN_FIRE_POWER and MAX_FIRE_POWER inclusive)
-     * @throws IllegalArgumentException if any parameter is invalid
+     * @param firePower   the dragon's initial firepower
      */
     public Dragon(final String name,
                   final Date dateOfBirth,
@@ -85,17 +84,16 @@ public class Dragon extends Creature
 
     /**
      * Restores the dragon's firepower by the specified amount.
-     * Firepower cannot exceed MAX_FIRE_POWER; if restoration would raise firepower above 100,
+     * Firepower cannot exceed MAX_FIRE_POWER; if restoration would raise firepower above MAX_FIRE_POWER,
      * firepower is capped at MAX_FIRE_POWER.
      *
-     * @param amount the amount of firepower to restore (must be non-negative)
-     * @throws IllegalArgumentException if amount is negative
+     * @param amount the amount of firepower to restore
      */
     public void restoreFirePower(final int amount)
     {
         if (amount < MIN_FIRE_POWER)
         {
-            throw new IllegalArgumentException("Restore amount cannot be negative: " + amount);
+            throw new IllegalArgumentException("Restore amount cannot be less than " + MIN_FIRE_POWER + ": " + amount);
         }
 
         firePower += amount;

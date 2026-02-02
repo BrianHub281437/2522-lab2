@@ -7,13 +7,11 @@ import java.util.Calendar;
  * Provides methods for date validation and day-of-week calculation.
  *
  * @author Ziad Malik
- * @author Evan Tang
+ * @author Brian Lau
  * @version 1.0
  */
 public class Date
 {
-
-
     // Year validation constants
     private static final int MIN_YEAR = 1800;
     private static final int NINETEENTH_CENTURY = 1900;

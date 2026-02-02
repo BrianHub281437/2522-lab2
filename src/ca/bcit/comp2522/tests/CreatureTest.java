@@ -123,7 +123,7 @@ public class CreatureTest
         elf = (Elf)c2;
         orc = (Orc)c3;
 
-        // Dragon breathes fire on Orc - demonstrates checked exception handling
+        // Dragon tries breathing fire on Orc
         try
         {
             dragon.breatheFire(orc);
@@ -142,7 +142,7 @@ public class CreatureTest
             System.out.println("Unexpected runtime issue during fire attack: " + e.getMessage());
         }
 
-        // Elf casts spell on Dragon - demonstrates checked exception handling
+        // Elf tries to cast a spell on Dragon
         try
         {
             elf.castSpell(dragon);
@@ -161,7 +161,7 @@ public class CreatureTest
             System.out.println("Unexpected runtime issue during spell: " + e.getMessage());
         }
 
-        // Orc goes berserk on Elf - demonstrates unchecked exception handling
+        // Orc tries to go berserk on Elf
         try
         {
             orc.berserk(elf);
@@ -180,7 +180,7 @@ public class CreatureTest
             System.out.println("Unexpected runtime issue during berserk: " + e.getMessage());
         }
 
-        // Test invalid healing - demonstrates unchecked HealingException handling
+        // Test invalid healing
         try
         {
             elf.heal(-1);
